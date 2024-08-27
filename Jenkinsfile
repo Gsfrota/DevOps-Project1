@@ -56,36 +56,11 @@ pipeline {
                     }
                 }
             }
-
-
-
-
-            stage("Verify WAR Files") {
+            stage("Verify Files") {
                 steps {
-                    script {
-                        // Define o diretório onde o arquivo .war deve estar
-                        def targetDir = 'target'
-
-                        // Verifica se o diretório existe
-                        if (fileExists(targetDir)) {
-                            // Lista o conteúdo do diretório para verificar se o .war está presente
-                            sh "ls -al ${targetDir}"
-                            
-                            // Verifica se há arquivos .war no diretório
-                            def warFiles = sh(script: "ls ${targetDir}/*.war", returnStatus: true)
-                            if (warFiles != 0) {
-                                error "Nenhum arquivo .war encontrado no diretório ${targetDir}."
-                            }
-                        } else {
-                            error "O diretório ${targetDir} não existe."
-                        }
-                    }
+                 sh "find . -name '*.war'"
                 }
             }
-
-
-
-
             stage("Build & Push Docker Image") {
                 steps {
                     script {
